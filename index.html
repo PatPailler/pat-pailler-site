@@ -464,13 +464,28 @@ function openSerie(name){
 }
 
 function showImage(){
-  const work=currentSerie[index];
-  const lightbox=document.getElementById("lightbox");
-  document.getElementById("lightbox-img").src = work.src;
-  document.getElementById("title").innerText = work.title;
-  document.getElementById("year").innerText = work.year;
-  document.getElementById("technique").innerText = work.technique;
-  document.getElementById("desc").innerText = work.desc;
+
+  const work = currentSerie[index];
+  const lightbox = document.getElementById("lightbox");
+  const img = document.getElementById("lightbox-img");
+
+  img.style.opacity = 0;
+
+  const newImg = new Image();
+  newImg.src = work.src;
+
+  newImg.onload = function(){
+
+    img.src = work.src;
+
+    document.getElementById("title").innerText = work.title;
+    document.getElementById("year").innerText = work.year;
+    document.getElementById("technique").innerText = work.technique;
+    document.getElementById("desc").innerText = work.desc;
+
+    img.style.opacity = 1;
+  };
+
   lightbox.style.display = "flex";
 }
 

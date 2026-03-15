@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Patrick Pailler</title>
+
+<!-- Polices raffinées -->
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+
+<style>
+/* --- Global --- */
+body {
+  font-family: 'Open Sans', Helvetica, Arial, sans-serif;
+  margin: 0;
+  background: #fff;
+  color: #222;
+}
+
+header {
+  padding: 60px 20px 40px 20px;
+  text-align: center;
+}
+
+h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: 42px;
+  margin: 0;
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: #111;
+}
+
+.subtitle {
+  color: #555;
+  margin-top: 8px;
+  font-size: 20px;
+  letter-spacing: 0.5px;
+  font-weight: 400;
+}
+
+/* --- Séries / Galerie --- */
+.series {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 50px;
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 50px 20px;
+}
+
+.series-item {
+  flex: 1 1 280px;
+  max-width: 320px;
+  text-align: center;
+  cursor: pointer;
+  transition: transform 0.3s, box-shadow 0.3s;
+  margin-bottom: 40px;
+}
+
+.series-item:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 28px rgba(0,0,0,0.15);
+}
+
+.series-image {
+  position: relative;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.series-image img {
+  width: 100%;
+  display: block;
+  border-radius: 6px;
+  transition: transform 0.3s, opacity 0.3s;
+}
+
+.series-image:hover img {
+  transform: scale(1.04);
+  opacity: 0.96;
+}
+
+.series-overlay {
+  position: absolute;
+  top:0; left:0;
+  width:100%; height:100%;
+  background: rgba(0,0,0,0.15);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  opacity:0;
+  transition: opacity 0.3s;
+}
+
+.series-overlay h3 {
+  color: white;
+  font-family: 'Playfair Display', serif;
+  font-size: 22px;
+  text-shadow: 1px 1px 4px rgba(0,0,0,0.6);
+  letter-spacing: 1px;
+}
+
+.series-image:hover .series-overlay {
+  opacity:1;
+}
+
+.series-title {
+  margin-top: 14px;
+  font-weight: 600;
+  font-size: 20px;
+  color: #111;
+  font-family: 'Playfair Display', serif;
+}
+
+.series-text {
+  color: #555;
+  font-size: 15px;
+  max-width: 500px;
+  margin: 8px auto 0 auto;
+  text-align: center;
+  line-height: 1.65;
+}
+
+/* --- Section Divider --- */
+.section-divider {
+  border: none;
+  height: 1px;
+  background-color: #e0e0e0;
+  margin: 60px auto;
+  max-width: 800px;
+}
+
+/* --- Bio --- */
+.bio {
+  max-width: 720px;
+  margin: 0 auto 20px auto;
+  text-align: center;
+  color: #444;
+  font-size: 16px;
+  line-height: 1.7;
+}
+
+/* --- Lien À propos ajusté --- */
+.about-link {
+  text-decoration: none;
+  color: #666;
+  font-weight: 600;
+  font-size: 18px;
+  margin-top: -6px;
+  display: inline-block;
+  transition: color 0.3s;
+}
+
+.about-link:hover {
+  color: #333;
+}
+
+/* --- Contact --- */
+.contact {
+  text-align: center;
+  margin-bottom: 100px;
+  color: #666;
+  font-size: 15px;
+}
+
+.contact a {
+  color: #666;
+  text-decoration: underline;
+}
+
+/* --- Footer --- */
+footer {
+  margin: 60px 40px 40px 40px;
+  color: #999;
+  font-size: 12px;
+  text-align: center;
+}
+
+/* --- Responsive --- */
+@media (max-width: 768px) {
+  .series-item { max-width: 45%; }
+  .series-title { font-size: 18px; }
+  .series-text { font-size: 14px; }
+  .about-link { font-size: 19px; }
+}
+
+@media (max-width: 480px) {
+
+  h1 {
+    font-size: 32px;
+  }
+
+  .subtitle {
+    font-size: 16px;
+  }
+
+  .series-item {
+    max-width: 90%;
+  }
+
+  .series-title {
+    font-size: 16px;
+  }
+
+  .series-text {
+    font-size: 13px;
+  }
+
+  .about-link {
+    font-size: 17px;
+  }
+
+  .series {
+  gap: 30px;
+  }
+
+  .lightbox-arrow {
+    font-size: 36px;
+    padding: 5px 12px;
+    opacity: 0.6;
+  }
+
+  .lightbox-arrow:first-of-type {
+  left: 10px;
+  }
+
+  .lightbox-arrow:last-of-type {
+  right: 10px;
+  }
+}
+
+/* --- Lightbox --- */
+#lightbox {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.96);
+  backdrop-filter: blur(4px);
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  z-index: 1000;
+}
+
+#lightbox-img {
+  max-width: 90%;
+  max-height: 80vh;
+  margin-bottom: 20px;
+  box-shadow: 0 12px 40px rgba(0,0,0,0.7);
+  border-radius: 4px;
+  transition: transform 0.3s ease;
+}
+
+#lightbox-img:hover {
+  transform: scale(1.02);
+}
+
+.lightbox-arrow {
+  position: absolute;
+  top: 50%;
+  font-size: 60px;
+  color: white;
+  cursor: pointer;
+  user-select: none;
+  transform: translateY(-50%);
+  z-index: 1010;
+  padding: 20px;
+  opacity: 0.6;
+  transition: opacity 0.2s;
+}
+
+.lightbox-arrow:hover {
+  opacity: 1;
+}
+
+/* --- Lightbox Bio --- */
+#bio-lightbox {
+  display:none;
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,0.88);
+  align-items:center;
+  justify-content:center;
+  flex-direction:column;
+  z-index:1000;
+  padding:20px;
+  overflow:auto;
+}
+
+#bio-lightbox > div {
+  background:white;
+  color:#222;
+  max-width:700px;
+  padding:30px;
+  border-radius:8px;
+  box-shadow:0 6px 30px rgba(0,0,0,0.5);
+}
+#bio-lightbox p {
+  margin-bottom: 18px;
+  line-height: 1.75;
+  text-align:justify;
+}
+#bio-lightbox p {
+  max-width: 60ch;
+  margin-left: auto;
+  margin-right: auto;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <h1>Patrick Pailler</h1>
+  <div class="subtitle"></div>
+</header>
+
+<div class="series">
+
+  <div class="series-item" onclick="openSerie('limbes')">
+    <div class="series-image">
+      <img src="images/limbes/limbes01.jpg" alt="Limbes 01">
+      <div class="series-overlay"><h3>Peintures</h3></div>
+    </div>
+    <h3 class="series-title" onclick="openSerie('limbes')">Peintures</h3>
+    <p class="series-text">Membres en tension.</p>
+  </div>
+
+  <div class="series-item" onclick="openSerie('echos')">
+    <div class="series-image">
+      <img src="images/echos/echos01.jpg" alt="Échos 01">
+      <div class="series-overlay"><h3>Collages</h3></div>
+    </div>
+    <h3 class="series-title" onclick="openSerie('echos')">Collages</h3>
+    <p class="series-text">Graines d'histoire(s).</p>
+  </div>
+
+  <div class="series-item" onclick="openSerie('dessins')">
+    <div class="series-image">
+      <img src="images/dessins/dessin01.jpg" alt="Dessin 01">
+      <div class="series-overlay"><h3>Dessins</h3></div>
+    </div>
+    <h3 class="series-title" onclick="openSerie('dessins')">Dessins</h3>
+    <p class="series-text">En corps.</p>
+  </div>
+
+</div>
+
+<hr class="section-divider">
+
+<!-- Bio / À propos -->
+<div class="bio">
+  <p>
+    <a href="#" class="about-link" onclick="openBio()">À propos</a>
+  </p>
+</div>
+
+<!-- Lightbox Bio -->
+<div id="bio-lightbox">
+  <div>
+    <h2 style="margin-top:0; font-family:'Playfair Display', serif;">À propos</h2>
+
+     <p>
+Dans mes <strong>dessins</strong> et <strong>peintures</strong>, j’explore la figure humaine à travers la <strong>fragmentation</strong>, la <strong>répétition</strong> et la <strong>recomposition</strong>.
+Corps, membres et visages se déploient dans des espaces indéterminés, hors de toute narration linéaire. Détachées de leur unité anatomique, les formes restent actives et expressives : gestes, regards, bouches instaurent une tension entre violence et intimité, troublant les repères du spectateur.
+</p>
+
+<p>
+Le point de départ de ces images se trouve dans des fragments de mon propre corps, photographiés puis redessinés, matière d’un <strong>autoportrait démultiplié</strong>.
+Au fil du travail, les figures se détachent de toute identité stable : les fragments se recomposent et se mêlent à d’autres corps possibles. La présence insistante des <strong>mains</strong> et des <strong>yeux</strong> renforce le dialogue avec le spectateur. Les regards scrutent ou interrogent, les mains désignent, retiennent ou protègent. Certaines compositions prennent la forme de <strong>scènes énigmatiques</strong>, où gestes, regards, positions des corps laissent apparaître des relations de pouvoir.
+</p>
+
+<p>
+Mes <strong>collages sur papier</strong> prolongent cette recherche dans une forme plus épurée : des fragments dessinés au stylo, parfois photocopiés, sont découpés et déplacés sur des surfaces travaillées par des <strong>lavis</strong> d’encre ou d’acrylique, laissant apparaître accidents et réserves. La diffusion imprévisible de l’eau crée des <strong>textures mouvantes</strong> auxquelles se confronte la <strong>précision du dessin</strong>. Le papier devient un partenaire actif de la composition.
+Les fonds en lavis suggèrent un espace presque théâtral, comme un rideau devant lequel les fragments du corps apparaissent et se confrontent.
+Dans ces images plus ouvertes, l’influence du <strong>surréalisme</strong> apparaît plus directement. Chaque collage fonctionne alors comme une <strong>image brève et suggestive</strong>, un point de départ, presque un <strong>déclencheur d'histoire</strong>.
+</p>
+
+<p>
+Patrick Pailler
+</p>
+    <p style="text-align:right; margin-top:20px;">
+      <span style="cursor:pointer; color:#555; font-weight:600;" onclick="closeBio()">Fermer ✕</span>
+    </p>
+  </div>
+</div>
+
+<hr class="section-divider">
+
+<!-- Contact -->
+<div class="contact">
+  <p>Pour toute demande : <a href="mailto:pat.pailler@gmail.com">pat.pailler@gmail.com</a></p>
+</div>
+
+<footer>
+  <p>&copy; 2026 Patrick Pailler</p>
+</footer>
+
+<!-- Lightbox -->
+<div id="lightbox">
+  <img id="lightbox-img">
+  <div style="text-align:center; color:white; max-width:700px;">
+    <h2 id="title" style="margin:0 0 5px 0; font-weight:600; font-size:20px;"></h2>
+    <p id="year" style="margin:2px 0; font-size:14px;"></p>
+    <p id="technique" style="margin:2px 0; font-size:14px;"></p>
+    <p id="desc" style="margin-top:10px; font-size:14px; line-height:1.5;"></p>
+  </div>
+  <div class="lightbox-arrow" onclick="prevImage()" style="left:20px;">←</div>
+  <div class="lightbox-arrow" onclick="nextImage()" style="right:20px;">→</div>
+</div>
+
+<script>
+const works = {
+  limbes:[
+    {src:"images/limbes/limbes01.jpg", title:"Origines (détail)", year:"2025", technique:"Acrylique sur toile", desc:""},
+    {src:"images/limbes/limbes02.jpg", title:"Origines 1", year:"2025", technique:"Acrylique sur toile", desc:"162 x 114cm"},
+    {src:"images/limbes/limbes03.jpg", title:"Origines 2", year:"2025", technique:"Acrylique sur toile", desc:"162 x 114cm"},
+    {src:"images/limbes/limbes04.jpg", title:"Origines 3", year:"2025", technique:"Acrylique sur toile", desc:"162 x 114cm"},
+    {src:"images/limbes/limbes05.jpg", title:"Origines", year:"2025", technique:"Acrylique sur toile", desc:"342 x 162cm"},
+    {src:"images/limbes/limbes06.jpg", title:"In/Out", year:"2024", technique:"Acrylique sur toile", desc:"162 x 114cm"},
+    {src:"images/limbes/limbes07.jpg", title:"Rêver, peut-être dormir", year:"2025", technique:"Acrylique sur toile", desc:"130 x 89cm"},
+    {src:"images/limbes/limbes08.jpg", title:"Confessions d'un bègue", year:"2026", technique:"Acrylique sur toile", desc:"162 x 130cm"},
+    {src:"images/limbes/limbes09.jpg", title:"Polymaniaque", year:"2025", technique:"Acrylique sur toile", desc:"80 x 64cm"},
+    {src:"images/limbes/limbes10.jpg", title:"Autoportriple", year:"2019", technique:"Acrylique sur toile", desc:"80 x 64cm"}
+  ],
+  echos:[
+    {src:"images/echos/echos01.jpg", title:"Mygale", year:"2026", technique:"Acrylique, encre de Chine, collages sur papier", desc:"65 x 50cm"},
+    {src:"images/echos/echos02.jpg", title:"Ego Trip", year:"2026", technique:"Acrylique, encre de Chine, collages sur papier", desc:"42 x 29,7cm"},
+    {src:"images/echos/echos03.jpg", title:"Chute libre", year:"2026", technique:"Acrylique, encre de Chine, collages sur papier", desc:"65 x 50cm"},
+    {src:"images/echos/echos04.jpg", title:"Swimming-pool", year:"2026", technique:"Acrylique, encre de Chine, collages sur papier", desc:"65 x 50cm"},
+    {src:"images/echos/echos05.jpg", title:"Buisson ardent", year:"2026", technique:"Acrylique, encre de Chine, collages sur papier", desc:"40,6 x 29,7cm"},
+    {src:"images/echos/echos06.jpg", title:"Caresse andalouse", year:"2026", technique:"Acrylique, encre de Chine, collages sur papier", desc:"42 x 29,7cm"},
+    {src:"images/echos/echos07.jpg", title:"Bal perdu", year:"2026", technique:"Acrylique, encre de Chine, collages sur papier", desc:"40,6 x 29,7cm"},
+    {src:"images/echos/echos08.jpg", title:"Brève rencontre", year:"2026", technique:"Acrylique, encre de Chine, collages sur papier", desc:"40,6 x 29,7cm"},
+    {src:"images/echos/echos09.jpg", title:"Le pendu", year:"2026", technique:"Acrylique, encre de Chine, collages sur papier", desc:"40,6 x 29,7cm"}, 
+    {src:"images/echos/echos10.jpg", title:"Sans titre", year:"2026", technique:"Acrylique, encre de Chine, collages sur papier", desc:""},
+    {src:"images/echos/echos11.jpg", title:"Caducée", year:"2026", technique:"Acrylique, encre de Chine, collages sur papier", desc:"42 x 29,7cm"},
+    {src:"images/echos/echos12.jpg", title:"Sans titre", year:"2025", technique:"Stylo bille, collages sur papier", desc:"29 x 21cm"}
+  ],
+  dessins:[
+    {src:"images/dessins/dessin01.jpg", title:"Confiné n°3", year:"2021", technique:"Stylo bille sur papier", desc:"29 x 21cm"},
+    {src:"images/dessins/dessin02.jpg", title:"Confiné n°4", year:"2021", technique:"Stylo bille sur papier", desc:"32 x 24cm"},
+    {src:"images/dessins/dessin03.jpg", title:"Confiné n°7", year:"2021", technique:"Stylo bille sur papier", desc:"59 x 42cm"},
+    {src:"images/dessins/dessin04.jpg", title:"Histoire d'A", year:"2025", technique:"Stylo bille sur papier", desc:"29 x 21cm"},
+    {src:"images/dessins/dessin05.jpg", title:"La Fabrique", year:"2024", technique:"Stylo bille sur papier", desc:"29 x 21cm"},
+    {src:"images/dessins/dessin06.jpg", title:"Cavale", year:"2026", technique:"Fusain sur papier", desc:"42 x 29cm"},
+    {src:"images/dessins/dessin07.jpg", title:"Cavale (détail)", year:"2026", technique:"Fusain sur papier", desc:""},
+    {src:"images/dessins/dessin08.jpg", title:"Dormir, peut-être rêver", year:"2025", technique:"Crayon sur papier", desc:"29 x 21cm"},
+    {src:"images/dessins/dessin09.jpg", title:"Big Bang", year:"2025", technique:"Stylo bille sur papier", desc:"29 x 21cm"},
+    {src:"images/dessins/dessin10.jpg", title:"Bouquet (manière délicate de dire F*** You)", year:"2025", technique:"Stylo bille sur papier", desc:"29 x 21cm"},
+    {src:"images/dessins/dessin11.jpg", title:"Ccchhhuuutttttt!!!", year:"2025", technique:"Stylo bille sur papier", desc:"29 x 21cm"}
+  ]
+};
+
+let currentSerie=[];
+let index=0;
+
+function openSerie(name){
+  currentSerie=works[name];
+  index=0;
+  showImage();
+}
+
+function showImage(){
+  const work=currentSerie[index];
+  const lightbox=document.getElementById("lightbox");
+  document.getElementById("lightbox-img").src = work.src;
+  document.getElementById("title").innerText = work.title;
+  document.getElementById("year").innerText = work.year;
+  document.getElementById("technique").innerText = work.technique;
+  document.getElementById("desc").innerText = work.desc;
+  lightbox.style.display = "flex";
+}
+
+function nextImage(){
+  index = (index + 1) % currentSerie.length;
+  showImage();
+}
+
+function prevImage(){
+  index = (index - 1 + currentSerie.length) % currentSerie.length;
+  showImage();
+}
+
+document.getElementById("lightbox").onclick = function(e){
+  if(e.target.id === "lightbox"){ this.style.display = "none"; }
+};
+
+document.addEventListener("keydown", function(e){
+  if(e.key === "Escape"){ document.getElementById("lightbox").style.display = "none"; }
+});
+
+function openBio() {
+  document.getElementById("bio-lightbox").style.display = "flex";
+}
+
+function closeBio() {
+  document.getElementById("bio-lightbox").style.display = "none";
+}
+
+document.getElementById("bio-lightbox").onclick = function(e){
+  if(e.target.id === "bio-lightbox"){ this.style.display = "none"; }
+};
+</script>
+
+</body>
+</html>
